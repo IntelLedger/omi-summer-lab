@@ -1,0 +1,93 @@
+// Copyright 2017 Intel Corporation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// -----------------------------------------------------------------------------
+
+syntax = "proto3";
+
+// A Recording is the capture of a specific performance or a produced sound
+// or video recording which may be composed of other Recordings.
+message Recording {
+    enum Type {
+        SONG = 0;
+        MIX = 1;
+        COMPILATION = 2;
+        VISUAL_WORK = 3;
+    }
+
+    // The RecordingOverallSplit determines how a payment on the Recording
+    // is allocated to the derived works (compositions), derived Recordings
+    // (samples), and contributors (players on the Recording). Must total
+    // to 100.
+    message RecordingOverallSplit {
+        uint32 derived_work_portion = 1;
+        uint32 derived_recording_portion = 2;
+        uint32 contributor_portion = 3;
+    }
+
+    // ContributorSplit is a split for the contributor portion of the
+    // payment.
+    message ContributorSplit {
+        uint32 split = 1;
+
+        // A contributor_name must be a valid IndividualIdentity.name
+        string contributor_name = 2;
+    }
+
+    // DerivedWorkSplit is a split for the derived work portion of
+    // the payment.
+    message DerivedWorkSplit {
+        uint32 split = 1;
+
+        // Must be a valid Work.name
+        string work_name = 2;
+    }
+
+    // DerivedRecordingSplit is a split for the derived recording
+    // portion of the payment.
+    message DerivedRecordingSplit {
+        uint32 split = 1;
+
+        // Must be a valid Recording.name
+        string recording_name = 2;
+    }
+
+    // The title of the Recording -- use this for the unique natural key
+    string title = 1;
+    Type type = 2;
+
+    // International Standard Recording Code, can be null
+    // https://en.wikipedia.org/wiki/International_Standard_Recording_Code
+    string ISRC = 3;
+
+    // An OrganizationalIdentity.name of type LABEL, can be null
+    string label_name = 4;
+
+    // contributor_splits must total 100.
+    repeated ContributorSplit contributor_splits = 5;
+
+    // derived_work_splits must total 100.
+    repeated DerivedWorkSplit derived_work_splits = 6;
+
+    // derived_recording_splits must total 100.
+    repeated DerivedRecordingSplit derived_recording_splits = 7;
+
+    // overall_split fields must total 100.
+    RecordingOverallSplit overall_split = 8;
+
+    // The pubkey used to register the unique name of the recording.
+    // This must match the Transaction.header.signer_pubkey. Initial
+    // creation of the Recording is permitted by any pubkey. Future
+    // updates to the Recording must be signed by the same party.
+    string registering_pubkey = 9;
+}
