@@ -54,15 +54,19 @@ message OrganizationalIdentity {
     // we are going to use name string as the unique keys.
     string name = 1;
 
+    // The type of the organization, as denoted by the
+    // OrganizationalIdentity.Type enum.
+    Type type = 2;
+
     // Interested Parties Information, can be null (org or individual,
     // org in this case) https://en.wikipedia.org/wiki/Interested_Parties_Information
-    string IPI = 2;
+    string IPI = 3;
 
     // Street address for payments -- can be null
-    string street_address = 3;
+    string street_address = 4;
 
     // The public key associated with the organization. The create/modify
     // transactions must be signed by the same key (must match
     // Transaction.header.signer_pubkey)
-    bytes pubkey = 4;
+    bytes pubkey = 5;
 }
