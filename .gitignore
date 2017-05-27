@@ -1,3 +1,7 @@
 /omi/sawtooth_omi/protobuf/
 /docs/build/
 /docs/source/_autogen/
+/js/node_modules
+/js/dependencies
+/js/docs
+/js/lib/protobuf/protobuf_bundle.json
