@@ -15,6 +15,8 @@
 
 import hashlib
 
+from google.protobuf.message import DecodeError
+
 from sawtooth_sdk.processor.state import StateEntry
 from sawtooth_sdk.processor.exceptions import InvalidTransaction
 from sawtooth_sdk.processor.exceptions import InternalError
@@ -22,7 +24,10 @@ from sawtooth_sdk.protobuf.transaction_pb2 import TransactionHeader
 
 from sawtooth_omi.protobuf.work_pb2 import Work
 from sawtooth_omi.protobuf.recording_pb2 import Recording
-from sawtooth_omi.protobuf.identity_pb2 import IndividualIdentity, OrganizationalIdentity
+from sawtooth_omi.protobuf.identity_pb2 import \
+        IndividualIdentity
+from sawtooth_omi.protobuf.identity_pb2 import \
+        OrganizationalIdentity
 from sawtooth_omi.protobuf.txn_payload_pb2 import OMITransactionPayload
 
 
@@ -37,8 +42,8 @@ RECORDING = 'SetRecording'
 INDIVIDUAL = 'SetIndividualIdentity'
 ORGANIZATION = 'SetOrganizationalIdentity'
 
-# address
 
+# address
 def _hash_name(name):
     return hashlib.sha512(name.encode('utf-8')).hexdigest()
 
@@ -123,7 +128,7 @@ def _parse_object(obj_string, action):
         parsed_obj = obj_type()
         parsed_obj.ParseFromString(obj_string)
         return parsed_obj
-    except:
+    except DecodeError:
         raise InvalidTransaction('Invalid action')
 
 
