@@ -146,7 +146,7 @@ def _unpack_transaction(transaction):
     payload.ParseFromString(transaction.payload)
 
     action = payload.action
-    txn_obj = transaction.data
+    txn_obj = payload.data
 
     obj = _parse_object(txn_obj, action)
 
