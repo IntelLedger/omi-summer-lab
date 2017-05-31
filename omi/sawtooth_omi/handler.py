@@ -72,11 +72,10 @@ def _get_unique_key(obj, action):
     return key
 
 
-def make_omi_address(obj, action):
+def make_omi_address(name, action):
     infix = _get_address_infix(action)
-    key = _get_unique_key(obj, action)
 
-    return OMI_ADDRESS_PREFIX + infix + _hash_name(key)[-62:]
+    return OMI_ADDRESS_PREFIX + infix + _hash_name(name)[-62:]
 
 
 class OMITransactionHandler:
@@ -99,9 +98,9 @@ class OMITransactionHandler:
     def apply(self, transaction, state):
         action, txn_obj, signer = _unpack_transaction(transaction)
 
-        address = make_omi_address(txn_obj, action)
+        txn_obj_name = _get_unique_key(txn_obj, action)
 
-        state_obj = _get_state_object(state, address, action)
+        state_obj = _get_state_object(state, txn_obj_name, action)
 
         # Check if the submitter is authorized to make changes,
         # then validate the transaction
@@ -109,7 +108,7 @@ class OMITransactionHandler:
         _check_split_sums(txn_obj, action)
         _check_references(txn_obj, action)
 
-        _set_state_object(state, address, txn_obj)
+        _set_state_object(state, txn_obj, action)
 
 
 # objects
@@ -184,8 +183,9 @@ def _check_references(obj, action):
 
 # state
 
-def _get_state_object(state, address, action):
+def _get_state_object(state, name, action):
     try:
+        address = make_omi_address(name, action)
         state_entries = state.get([address])
         state_obj = state_entries[0].data
         obj = _parse_object(state_obj, action)
@@ -195,13 +195,13 @@ def _get_state_object(state, address, action):
     return obj
 
 
-def _set_state_object(state, address, obj):
-    obj_string = obj.SerializeToString()
+def _set_state_object(state, obj, action):
+    name = _get_unique_key(obj, action)
 
     addresses = state.set([
         StateEntry(
-            address=address,
-            data=obj_string)
+            address=make_omi_address(name, action),
+            data=obj.SerializeToString())
     ])
 
     if not addresses:
