@@ -170,6 +170,20 @@ def _check_split_sums(obj, action):
     Raise InvalidTransaction if there are nonempty splits
     that don't add up to 100
     '''
+    if action == WORK:
+        sp_split_sum = sum([
+            sp_split.split
+            for sp_split in obj.songwriter_publisher_splits
+        ])
+
+        if sp_split_sum != 100:
+            raise InvalidTransaction(
+                'Songwriter-publisher split for "{t}" adds up to {s}'.format(
+                    t=obj.title,
+                    s=sp_split_sum))
+
+    elif action == RECORDING:
+        pass
 
 
 def _check_references(obj, action):
