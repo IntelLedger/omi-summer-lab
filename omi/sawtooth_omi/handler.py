@@ -106,7 +106,7 @@ class OMITransactionHandler:
         # then validate the transaction
         _check_authorization(state_obj, action, signer)
         _check_split_sums(txn_obj, action)
-        _check_references(txn_obj, action)
+        _check_references(state, txn_obj, action)
 
         _set_state_object(state, txn_obj, action)
 
@@ -240,13 +240,33 @@ def _check_split_sums(obj, action):
                     s=drsp_sum))
 
 
-def _check_references(obj, action):
+def _check_references(state, obj, action):
     '''
     Raise InvalidTransaction if the object references anything
     that isn't in state, eg if a Work refers to a songwriter
     (IndividualIdentity) or a publisher (OrganizationalIdentity)
     that hasn't been registered
     '''
+    if action == WORK:
+        for sp_split in obj.songwriter_publisher_splits:
+            songwriter_publisher = sp_split.songwriter_publisher
+
+            songwriter = songwriter_publisher.songwriter_name
+            if _get_state_object(state, songwriter, INDIVIDUAL) is None:
+                raise InvalidTransaction(
+                    'Work "{w}" references unknown songwriter "{s}"'.format(
+                        w=obj.title,
+                        s=songwriter))
+
+            publisher = songwriter_publisher.publisher_name
+            if _get_state_object(state, publisher, ORGANIZATION) is None:
+                raise InvalidTransaction(
+                    'Work "{w}" references unknown publisher "{p}"'.format(
+                        w=obj.title,
+                        p=publisher))
+
+    elif action == RECORDING:
+        pass
 
 
 # state
