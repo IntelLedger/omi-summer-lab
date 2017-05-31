@@ -14,6 +14,7 @@
 # -----------------------------------------------------------------------------
 
 import hashlib
+import logging
 
 from google.protobuf.message import DecodeError
 
@@ -24,11 +25,12 @@ from sawtooth_sdk.protobuf.transaction_pb2 import TransactionHeader
 
 from sawtooth_omi.protobuf.work_pb2 import Work
 from sawtooth_omi.protobuf.recording_pb2 import Recording
-from sawtooth_omi.protobuf.identity_pb2 import \
-        IndividualIdentity
-from sawtooth_omi.protobuf.identity_pb2 import \
-        OrganizationalIdentity
+from sawtooth_omi.protobuf.identity_pb2 import IndividualIdentity
+from sawtooth_omi.protobuf.identity_pb2 import OrganizationalIdentity
 from sawtooth_omi.protobuf.txn_payload_pb2 import OMITransactionPayload
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 # actions
