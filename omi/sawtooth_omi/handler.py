@@ -157,9 +157,9 @@ def _check_authorization(state_obj, action, signer):
         return
 
     if action in (WORK, RECORDING):
-        pubkey = state_obj.pubkey
+        pubkey = state_obj.registering_pubkey.decode()
     elif action in (INDIVIDUAL, ORGANIZATION):
-        pubkey = state_obj.registering_pubkey
+        pubkey = state_obj.pubkey.decode()
 
     if pubkey != signer:
         raise InvalidTransaction('Signing key mismatch')
