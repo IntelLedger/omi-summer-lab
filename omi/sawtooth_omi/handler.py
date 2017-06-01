@@ -266,7 +266,32 @@ def _check_references(state, obj, action):
                         p=publisher))
 
     elif action == RECORDING:
-        pass
+        # check contributors
+        for contributor_split in obj.contributor_splits:
+            contributor = contributor_split.contributor_name
+            if _get_state_object(state, contributor, INDIVIDUAL) is None:
+                raise InvalidTransaction(
+                    'Recording "{t}" references unknown contributor "{c}"'.format(
+                        t=obj.title,
+                        c=contributor))
+
+        # check derived works
+        for derived_work_split in obj.derived_work_splits:
+            work = derived_work_split.work_name
+            if _get_state_object(state, work, WORK) is None:
+                raise InvalidTransaction(
+                    'Recording "{t}" references unkown work "{w}"'.format(
+                        t=obj.title,
+                        w=work))
+
+        # check derived recordings
+        for derived_recording_split in obj.derived_recording_splits:
+            recording = derived_recording_split.recording_name
+            if _get_state_object(state, recording, RECORDING) is None:
+                raise InvalidTransaction(
+                    'Recording "{t}" references unknown recording "{r}"'.format(
+                        t=obj.title,
+                        r=recording))
 
 
 # state
