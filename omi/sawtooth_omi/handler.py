@@ -183,7 +183,61 @@ def _check_split_sums(obj, action):
                     s=sp_split_sum))
 
     elif action == RECORDING:
-        pass
+        # check overall split
+        overall = obj.overall_split
+
+        overall_sum = sum([
+            overall.derived_work_portion,
+            overall.derived_recording_portion,
+            overall.contributor_portion,])
+
+        if overall_sum != 100:
+            raise InvalidTransaction(
+                'Overall split for {t} adds up to {s}'.format(
+                    t=obj.title,
+                    s=overall_sum))
+
+        # check contributor split
+        contributor_splits = [
+            contributor_split.split
+            for contributor_split in obj.contributor_splits
+        ]
+
+        csp_sum = sum(contributor_splits)
+
+        if csp_sum != 100:
+            raise InvalidTransaction(
+                'Contributor split for {t} adds up to {s}'.format(
+                    t=obj.title,
+                    s=csp_sum))
+
+        # check derived work split
+        derived_work_splits = [
+            derived_work_split.split
+            for derived_work_split in obj.derived_work_splits
+        ]
+
+        dwsp_sum = sum(derived_work_splits)
+
+        if dwsp_sum != 100:
+            raise InvalidTransaction(
+                'Derived work split for {t} adds up to {s}'.format(
+                    t=obj.title,
+                    s=dwsp_sum))
+
+        # check derived recording split
+        derived_recording_splits = [
+            derived_recording_split.split
+            for derived_recording_split in obj.derived_work_splits
+        ]
+
+        drsp_sum = sum(derived_recording_splits)
+
+        if drsp_sum != 100:
+            raise InvalidTransaction(
+                'Derived recording split for {t} adds up to {s}'.format(
+                    t=obj.title,
+                    s=drsp_sum))
 
 
 def _check_references(obj, action):
