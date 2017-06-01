@@ -33,19 +33,33 @@ from sawtooth_omi.protobuf.txn_payload_pb2 import OMITransactionPayload
 LOGGER = logging.getLogger(__name__)
 
 
-# actions
+# tags
 
-# Right now the actions are doubling as a kind of type tag.
-# This isn't very elegant, and something more suitable
-# can be put in place when we know more about other kinds
-# of actions that might be included.
-WORK = 'SetWork'
-RECORDING = 'SetRecording'
-INDIVIDUAL = 'SetIndividualIdentity'
-ORGANIZATION = 'SetOrganizationalIdentity'
+WORK = '__work'
+RECORDING = '__recording'
+INDIVIDUAL = '__individual'
+ORGANIZATION = '__organization'
 
+
+def get_tag(action):
+    work_actions = 'SetWork',
+    recording_actions = 'SetRecording',
+    individual_actions = 'SetIndividualIdentity',
+    organization_actions = 'SetOrganizationalIdentity',
+
+    tags = {
+        work_actions: WORK,
+        recording_actions: RECORDING,
+        individual_actions: INDIVIDUAL,
+        organization_actions: ORGANIZATION,
+    }
+
+    for action_group in tags:
+        if action in action_group:
+            return tags[action_group]
 
 # address
+
 def _hash_name(name):
     return hashlib.sha512(name.encode('utf-8')).hexdigest()
 
@@ -54,7 +68,7 @@ FAMILY_NAME = 'OMI'
 OMI_ADDRESS_PREFIX = _hash_name(FAMILY_NAME)[:6]
 
 
-def _get_address_infix(action):
+def _get_address_infix(tag):
     infixes = {
         WORK: 'a0',
         RECORDING: 'a1',
@@ -62,20 +76,20 @@ def _get_address_infix(action):
         ORGANIZATION: '01',
     }
 
-    return infixes[action]
+    return infixes[tag]
 
 
-def _get_unique_key(obj, action):
-    if action in (WORK, RECORDING):
+def _get_unique_key(obj, tag):
+    if tag in (WORK, RECORDING):
         key = obj.title
-    elif action in (INDIVIDUAL, ORGANIZATION):
+    elif tag in (INDIVIDUAL, ORGANIZATION):
         key = obj.name
 
     return key
 
 
-def make_omi_address(name, action):
-    infix = _get_address_infix(action)
+def make_omi_address(name, tag):
+    infix = _get_address_infix(tag)
 
     return OMI_ADDRESS_PREFIX + infix + _hash_name(name)[-62:]
 
@@ -100,22 +114,24 @@ class OMITransactionHandler:
     def apply(self, transaction, state):
         action, txn_obj, signer = _unpack_transaction(transaction)
 
-        txn_obj_name = _get_unique_key(txn_obj, action)
+        tag = get_tag(action)
 
-        state_obj = _get_state_object(state, txn_obj_name, action)
+        txn_obj_name = _get_unique_key(txn_obj, tag)
+
+        state_obj = _get_state_object(state, txn_obj_name, tag)
 
         # Check if the submitter is authorized to make changes,
         # then validate the transaction
-        _check_authorization(state_obj, action, signer)
-        _check_split_sums(txn_obj, action)
-        _check_references(state, txn_obj, action)
+        _check_authorization(state_obj, tag, signer)
+        _check_split_sums(txn_obj, tag)
+        _check_references(state, txn_obj, tag)
 
-        _set_state_object(state, txn_obj, action)
+        _set_state_object(state, txn_obj, tag)
 
 
 # objects
 
-def _parse_object(obj_string, action):
+def get_object_type(tag):
     obj_types = {
         WORK: Work,
         RECORDING: Recording,
@@ -123,7 +139,11 @@ def _parse_object(obj_string, action):
         ORGANIZATION: OrganizationalIdentity,
     }
 
-    obj_type = obj_types[action]
+    return obj_types[tag]
+
+
+def _parse_object(obj_string, tag):
+    obj_type = get_object_type(tag)
 
     try:
         parsed_obj = obj_type()
@@ -149,30 +169,32 @@ def _unpack_transaction(transaction):
     action = payload.action
     txn_obj = payload.data
 
-    obj = _parse_object(txn_obj, action)
+    tag = get_tag(action)
+
+    obj = _parse_object(txn_obj, tag)
 
     return action, obj, signer
 
 
-def _check_authorization(state_obj, action, signer):
+def _check_authorization(state_obj, tag, signer):
     if not state_obj:
         return
 
-    if action in (WORK, RECORDING):
+    if tag in (WORK, RECORDING):
         pubkey = state_obj.registering_pubkey.decode()
-    elif action in (INDIVIDUAL, ORGANIZATION):
+    elif tag in (INDIVIDUAL, ORGANIZATION):
         pubkey = state_obj.pubkey.decode()
 
     if pubkey != signer:
         raise InvalidTransaction('Signing key mismatch')
 
 
-def _check_split_sums(obj, action):
+def _check_split_sums(obj, tag):
     '''
     Raise InvalidTransaction if there are nonempty splits
     that don't add up to 100
     '''
-    if action == WORK:
+    if tag == WORK:
         sp_split_sum = sum([
             sp_split.split
             for sp_split in obj.songwriter_publisher_splits
@@ -184,7 +206,7 @@ def _check_split_sums(obj, action):
                     t=obj.title,
                     s=sp_split_sum))
 
-    elif action == RECORDING:
+    elif tag == RECORDING:
         # check overall split
         overall = obj.overall_split
 
@@ -242,32 +264,32 @@ def _check_split_sums(obj, action):
                     s=drsp_sum))
 
 
-def _check_references(state, obj, action):
+def _check_references(state, obj, tag):
     '''
     Raise InvalidTransaction if the object references anything
     that isn't in state, eg if a Work refers to a songwriter
     (IndividualIdentity) or a publisher (OrganizationalIdentity)
     that hasn't been registered
     '''
-    if action == WORK:
+    if tag == WORK:
         for sp_split in obj.songwriter_publisher_splits:
             songwriter_publisher = sp_split.songwriter_publisher
 
             songwriter = songwriter_publisher.songwriter_name
             if _get_state_object(state, songwriter, INDIVIDUAL) is None:
                 raise InvalidTransaction(
-                    'Work "{w}" references unknown songwriter "{s}"'.format(
-                        w=obj.title,
+                    'Work "{t}" references unknown songwriter "{s}"'.format(
+                        t=obj.title,
                         s=songwriter))
 
             publisher = songwriter_publisher.publisher_name
             if _get_state_object(state, publisher, ORGANIZATION) is None:
                 raise InvalidTransaction(
-                    'Work "{w}" references unknown publisher "{p}"'.format(
-                        w=obj.title,
+                    'Work "{t}" references unknown publisher "{p}"'.format(
+                        t=obj.title,
                         p=publisher))
 
-    elif action == RECORDING:
+    elif tag == RECORDING:
         # check contributors
         for contributor_split in obj.contributor_splits:
             contributor = contributor_split.contributor_name
@@ -295,27 +317,26 @@ def _check_references(state, obj, action):
                         t=obj.title,
                         r=recording))
 
-
 # state
 
-def _get_state_object(state, name, action):
+def _get_state_object(state, name, tag):
     try:
-        address = make_omi_address(name, action)
+        address = make_omi_address(name, tag)
         state_entries = state.get([address])
         state_obj = state_entries[0].data
-        obj = _parse_object(state_obj, action)
+        obj = _parse_object(state_obj, tag)
     except IndexError:
         obj = None
 
     return obj
 
 
-def _set_state_object(state, obj, action):
-    name = _get_unique_key(obj, action)
+def _set_state_object(state, obj, tag):
+    name = _get_unique_key(obj, tag)
 
     addresses = state.set([
         StateEntry(
-            address=make_omi_address(name, action),
+            address=make_omi_address(name, tag),
             data=obj.SerializeToString())
     ])
 
