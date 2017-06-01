@@ -1,0 +1,9 @@
+{
+  "source": {
+    "include": ["lib/", "lib/protobuf/"]
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "recurse": true
+}

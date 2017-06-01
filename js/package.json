@@ -1,0 +1,45 @@
+{
+  "name": "omi-summer-lab",
+  "version": "1.0.0",
+  "description": "none",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/IntelLedger/omi-summer-lab.git"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "compile-protobuf": "node ./scripts/compile_protobuf.js > ./lib/protobuf/protobuf_bundle.json",
+    "test": "standard && mocha --recursive spec --compilers js:babel-register -r babel-polyfill",
+    "watch:test": "mocha -w --recursive spec --compilers js:babel-register -r babel-polyfill",
+    "prepublish":": npm run compile-protobuf",
+    "postinstall": "./scripts/install_sawtooth_sdk.sh",
+    "build-docs": "mkdir -p docs && jsdoc -c conf.json -d ./docs"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "jsdoc": "^3.4.3",
+    "mocha": "^3.4.2",
+    "standard": "^10.0.2",
+    "superagent-mocker": "^0.5.2"
+  },
+  "dependencies": {
+    "protobufjs": "^6.7.3",
+    "superagent": "^3.5.2"
+  },
+  "standard": {
+    "ignore": [
+      "dependencies",
+      "docs"
+    ],
+    "globals": [
+      "describe",
+      "beforeEach",
+      "it"
+    ]
+  }
+}
