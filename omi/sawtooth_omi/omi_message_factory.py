@@ -13,26 +13,15 @@
 # limitations under the License.
 # -----------------------------------------------------------------------------
 
-import hashlib
-
 from sawtooth_processor_test.message_factory import MessageFactory
 
 from sawtooth_omi.handler import FAMILY_NAME
 from sawtooth_omi.handler import OMI_ADDRESS_PREFIX
 from sawtooth_omi.handler import make_omi_address
-from sawtooth_omi.protobuf.work_pb2 import Work
-from sawtooth_omi.protobuf.recording_pb2 import Recording
-from sawtooth_omi.protobuf.identity_pb2 import IndividualIdentity
-from sawtooth_omi.protobuf.identity_pb2 import OrganizationalIdentity
+from sawtooth_omi.handler import get_tag, get_object_type
+from sawtooth_omi.handler import WORK, RECORDING, INDIVIDUAL, ORGANIZATION
+
 from sawtooth_omi.protobuf.txn_payload_pb2 import OMITransactionPayload
-
-
-# actions
-
-WORK = 'SetWork'
-RECORDING = 'SetRecording'
-INDIVIDUAL = 'SetIndividualIdentity'
-ORGANIZATION = 'SetOrganizationalIdentity'
 
 
 class OMIMessageFactory:
@@ -52,7 +41,9 @@ class OMIMessageFactory:
             self.create_transaction(action, **kwargs)])
 
     def create_transaction(self, action, **kwargs):
-        obj_type = _get_object_type(action)
+        tag = get_tag(action)
+
+        obj_type = get_object_type(tag)
 
         obj = obj_type(**kwargs)
 
@@ -60,26 +51,26 @@ class OMIMessageFactory:
             action=action,
             data=obj.SerializeToString()).SerializeToString()
 
-        if action in (INDIVIDUAL, ORGANIZATION):
+        if tag in (INDIVIDUAL, ORGANIZATION):
             name = kwargs['name']
-        elif action in (WORK, RECORDING):
+        elif tag in (WORK, RECORDING):
             name = kwargs['title']
 
-        obj_address = make_omi_address(name, action)
+        obj_address = make_omi_address(name, tag)
 
-        if action in (INDIVIDUAL, ORGANIZATION):
+        if tag in (INDIVIDUAL, ORGANIZATION):
             inputs = [obj_address]
-        elif action in (WORK, RECORDING):
-            inputs = [obj_address] + _reference_addresses(action, **kwargs)
+        elif tag in (WORK, RECORDING):
+            inputs = [obj_address] + _reference_addresses(tag, **kwargs)
 
         return self._factory.create_transaction(
             payload, inputs, [obj_address], [])
 
 
-def _reference_addresses(action, **kwargs):
-    if action == WORK:
+def _reference_addresses(tag, **kwargs):
+    if tag == WORK:
         splits = kwargs['songwriter_publisher_splits']
-        
+
         songwriter_publishers = [
             split['songwriter_publisher']
             for split in splits
@@ -97,7 +88,7 @@ def _reference_addresses(action, **kwargs):
 
         return songwriter_addresses + publisher_addresses
 
-    elif action == RECORDING:
+    elif tag == RECORDING:
         contributor_addresses = [
             make_omi_address(split['contributor_name'], INDIVIDUAL)
             for split in kwargs['contributor_splits']
@@ -114,14 +105,3 @@ def _reference_addresses(action, **kwargs):
         ]
 
         return contributor_addresses + work_addresses + recording_addresses
-
-
-def _get_object_type(action):
-    actions = {
-        'SetWork': Work,
-        'SetRecording': Recording,
-        'SetIndividualIdentity': IndividualIdentity,
-        'SetOrganizationalIdentity': OrganizationalIdentity
-    }
-
-    return actions[action]
