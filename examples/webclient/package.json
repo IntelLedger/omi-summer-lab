@@ -1,0 +1,19 @@
+{
+  "name": "omi-client-example",
+  "version": "1.0.0",
+  "description": "A simple client example for the web",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "wp": "mkdir -p ./dist && webpack",
+    "postinstall": "npm i ./node_modules/omi-summer-lab/dependencies/sawtooth-core/sdk/javascript"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "omi-summer-lab": "file:../../js"
+  },
+  "devDependencies": {
+    "webpack": "^2.6.1"
+  }
+}

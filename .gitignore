@@ -5,3 +5,6 @@
 /js/dependencies
 /js/docs
 /js/lib/protobuf/protobuf_bundle.json
+/examples/webclient/node_modules
+/examples/webclient/dist
+/examples/server/node_modules
