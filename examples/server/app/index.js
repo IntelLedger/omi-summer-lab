@@ -18,7 +18,7 @@
 const express = require('express')
 const app = express()
 
-let {OmiClient} = require('omi-summer-lab')
+let {OmiClient} = require('omi-client')
 // let {signer} = require('sawtooth-sdk')
 
 app.get('/individuals', (req, res) => {

@@ -9,7 +9,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      zeromq$: path.resolve(__dirname, './node_modules/omi-summer-lab/lib/mock_zeromq.js')
+      zeromq$: path.resolve(__dirname, './node_modules/omi-client/omi-client/lib/mock_zeromq.js')
     }
   }
 }

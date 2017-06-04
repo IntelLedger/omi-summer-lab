@@ -1,10 +1,10 @@
 /omi/sawtooth_omi/protobuf/
 /docs/build/
 /docs/source/_autogen/
-/js/node_modules
-/js/dependencies
-/js/docs
-/js/lib/protobuf/protobuf_bundle.json
+/node_modules
+/omi-client/dependencies
+/omi-client/docs
+/omi-client/lib/protobuf/protobuf_bundle.json
 /examples/webclient/node_modules
 /examples/webclient/dist
 /examples/server/node_modules

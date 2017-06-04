@@ -1,19 +1,19 @@
 {
-  "name": "omi-summer-lab",
+  "name": "omi-client",
   "version": "1.0.0",
   "description": "none",
   "repository": {
     "type": "git",
     "url": "git://github.com/IntelLedger/omi-summer-lab.git"
   },
-  "main": "lib/index.js",
+  "main": "omi-client/lib/index.js",
   "scripts": {
-    "compile-protobuf": "node ./scripts/compile_protobuf.js > ./lib/protobuf/protobuf_bundle.json",
-    "test": "standard && mocha --recursive spec --compilers js:babel-register -r babel-polyfill",
-    "watch:test": "mocha -w --recursive spec --compilers js:babel-register -r babel-polyfill",
+    "compile-protobuf": "node ./omi-client/scripts/compile_protobuf.js > ./omi-client/lib/protobuf/protobuf_bundle.json",
+    "test": "standard && mocha --recursive omi-client/spec --compilers js:babel-register -r babel-polyfill",
+    "watch:test": "mocha -w --recursive omi-client/spec --compilers js:babel-register -r babel-polyfill",
     "prepublish":": npm run compile-protobuf",
-    "postinstall": "./scripts/install_sawtooth_sdk.sh",
-    "build-docs": "mkdir -p docs && jsdoc -c conf.json -d ./docs"
+    "postinstall": "./omi-client/scripts/install_sawtooth_sdk.sh",
+    "build-docs": "mkdir -p omi-client/docs && jsdoc -c omi-client/conf.json -d ./omi-client/docs"
   },
   "author": "",
   "license": "Apache-2.0",
