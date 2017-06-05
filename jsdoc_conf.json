@@ -1,6 +1,6 @@
 {
   "source": {
-    "include": ["lib/", "lib/protobuf/"]
+    "include": ["omi-client/lib/", "omi-client/lib/protobuf/"]
   },
   "plugins": [
     "plugins/markdown"
