@@ -1,0 +1,17 @@
+{
+  "name": "omi-server-example",
+  "version": "1.0.0",
+  "description": "A omi server example",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "npm i ./node_modules/omi-client/omi-client/dependencies/sawtooth-core/sdk/javascript",
+    "start": "node app/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.3",
+    "omi-client": "file:../../"
+  }
+}

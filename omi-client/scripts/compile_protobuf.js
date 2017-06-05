@@ -22,7 +22,7 @@ const fs = require('fs')
 
 const protobuf = require('protobufjs')
 const jsonTarget = require(
-  path.resolve(__dirname, '../node_modules/protobufjs/cli/targets/json'))
+  path.resolve(__dirname, '../../node_modules/protobufjs/cli/targets/json'))
 
 const protoDir = path.resolve(__dirname, '../../protos')
 
