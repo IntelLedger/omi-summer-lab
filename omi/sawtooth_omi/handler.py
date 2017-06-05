@@ -202,7 +202,7 @@ def _check_key(obj, tag, signer, message):
     if tag in (WORK, RECORDING):
         pubkey = obj.registering_pubkey
     elif tag in (INDIVIDUAL, ORGANIZATION):
-        pubkey = obj.pubkey.decode()
+        pubkey = obj.pubkey
 
     if pubkey != signer:
         raise InvalidTransaction(message)
