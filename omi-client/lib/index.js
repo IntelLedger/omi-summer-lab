@@ -23,7 +23,7 @@ const request = require('superagent')
 
 const {getObjectAddress, getTypePrefix} = require('./addressing')
 
-const {TransactionEncoder, BatchEncoder} = require('sawtooth-sdk')
+const {TransactionEncoder, BatchEncoder, signer} = require('sawtooth-sdk')
 const {
   IndividualIdentity,
   OrganizationalIdentity,
@@ -61,6 +61,7 @@ class OmiClient {
   constructor (sawtoothRestUrl, privateKey) {
     this._sawtoothRestUrl = sawtoothRestUrl
     this._privateKey = privateKey
+    this._publicKey = signer.getPublicKey(privateKey)
   }
 
   /**
@@ -97,12 +98,13 @@ class OmiClient {
    * @since 1.0.0
    */
   setIndividual (individual) {
-    return _submitOmiTransaction(this._sawtoothRestUrl,
-                                 this._privateKey,
-                                 'SetIndividualIdentity',
-                                 IndividualIdentity,
-                                 'name',
-                                 individual)
+    return _submitOmiTransaction(
+      this._sawtoothRestUrl,
+      this._privateKey,
+      'SetIndividualIdentity',
+      IndividualIdentity,
+      'name',
+      Object.assign(individual, {pubkey: this._publicKey}))
   }
 
   /**
@@ -172,12 +174,13 @@ class OmiClient {
    * @since 1.0.0
    */
   setOrganization (organization) {
-    return _submitOmiTransaction(this._sawtoothRestUrl,
-                                 this._privateKey,
-                                 'SetOrganizationalIdentity',
-                                 OrganizationalIdentity,
-                                 'name',
-                                 organization)
+    return _submitOmiTransaction(
+      this._sawtoothRestUrl,
+      this._privateKey,
+      'SetOrganizationalIdentity',
+      OrganizationalIdentity,
+      'name',
+      Object.assign(organization, {pubkey: this._publicKey}))
   }
 
   /**
@@ -266,12 +269,13 @@ class OmiClient {
    * @since 1.0.0
    */
   setRecording (recording) {
-    return _submitOmiTransaction(this._sawtoothRestUrl,
-                                 this._privateKey,
-                                 'SetRecording',
-                                 Recording,
-                                 'title',
-                                 recording)
+    return _submitOmiTransaction(
+      this._sawtoothRestUrl,
+      this._privateKey,
+      'SetRecording',
+      Recording,
+      'title',
+      Object.assign(recording, {registeringPubkey: this._publicKey}))
   }
 
   /**
@@ -368,12 +372,13 @@ class OmiClient {
    * @since 1.0.0
    */
   setWork (work) {
-    return _submitOmiTransaction(this._sawtoothRestUrl,
-                                 this._privateKey,
-                                 'SetWork',
-                                 Work,
-                                 'title',
-                                 work)
+    return _submitOmiTransaction(
+      this._sawtoothRestUrl,
+      this._privateKey,
+      'SetWork',
+      Work,
+      'title',
+      Object.assign(work, {registeringPubkey: this._publicKey}))
   }
 
   /**
