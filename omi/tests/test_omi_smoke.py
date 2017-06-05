@@ -58,13 +58,25 @@ class TestOMISmoke(unittest.TestCase):
             'pubkey': david_bowie.public_key,
         })
 
-        LOGGER.info('Tina tries and fails to set "David Bowie"')
+        LOGGER.info(
+            'Tina tries and fails to update "David Bowie" with her own key')
         
         tina_turner.set_individual_identity(**{
             'name': 'David Bowie',
             'IPI': '00334284961',
             'ISNI': '0000 0001 2096 4892',
             'street_address': 'Minnesota',
+            'pubkey': tina_turner.public_key,
+        })
+
+        LOGGER.info(
+            'David tries and fails to update "Tina Turner" with Tina\'s key')
+
+        david_bowie.set_individual_identity(**{
+            'name': 'Tina Turner',
+            'IPI': '00062845371',
+            'ISNI': '0000 0000 6311 1489',
+            'street_address': 'Philadelphia',
             'pubkey': tina_turner.public_key,
         })
 
@@ -381,4 +393,3 @@ class OMIClient:
     def _format_queries(queries):
         queries = {k: v for k, v in queries.items() if v is not None}
         return queries if queries else ''
-
