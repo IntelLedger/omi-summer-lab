@@ -455,7 +455,7 @@ class StatusChecker {
    */
   check (timeout = 300000) {
     return Promise.race([
-      _promiseGet(this._statusUrl).then((body) => body.data[this.batchId]),
+      _promiseGet(`${this._statusUrl}&wait=${timeout / 1000}`).then((body) => body.data[this.batchId]),
       new Promise((resolve, reject) => {
         setTimeout(() => reject(new Error('Timeout occurred')), timeout)
       })
