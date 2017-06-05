@@ -324,7 +324,7 @@ class OMIClient:
     def __init__(self, url):
         self.url = url
         self.factory = OMIMessageFactory()
-        self.public_key = self.factory.public_key.encode()
+        self.public_key = self.factory.public_key
         self.prefix = '38aa50'
 
     def set_work(self, **kwargs):

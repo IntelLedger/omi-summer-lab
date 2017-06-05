@@ -36,7 +36,7 @@ message IndividualIdentity {
     // The public key associated with the individual. The create/modify
     // transactions must be signed by the same key (must match
     // Transaction.header.signer_pubkey)
-    bytes pubkey = 5;
+    string pubkey = 5;
 }
 
 // OrganizationalIdentity represents a specific organization who might
@@ -68,5 +68,5 @@ message OrganizationalIdentity {
     // The public key associated with the organization. The create/modify
     // transactions must be signed by the same key (must match
     // Transaction.header.signer_pubkey)
-    bytes pubkey = 5;
+    string pubkey = 5;
 }
