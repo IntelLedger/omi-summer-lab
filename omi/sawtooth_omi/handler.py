@@ -80,6 +80,9 @@ def _get_address_infix(tag):
 
 
 def _get_unique_key(obj, tag):
+    if not obj:
+        return None
+
     if tag in (WORK, RECORDING):
         key = obj.title
     elif tag in (INDIVIDUAL, ORGANIZATION):
@@ -116,13 +119,16 @@ class OMITransactionHandler:
 
         tag = get_tag(action)
 
+        # Check that the object's public key matches the submitter's
+        _check_txn_object_key(txn_obj, tag, signer)
+
         txn_obj_name = _get_unique_key(txn_obj, tag)
 
         state_obj = _get_state_object(state, txn_obj_name, tag)
 
         # Check if the submitter is authorized to make changes,
         # then validate the transaction
-        _check_authorization(state_obj, tag, signer)
+        _check_state_object_authorization(state_obj, tag, signer)
         _check_split_sums(txn_obj, tag)
         _check_references(state, txn_obj, tag)
 
@@ -176,17 +182,30 @@ def _unpack_transaction(transaction):
     return action, obj, signer
 
 
-def _check_authorization(state_obj, tag, signer):
-    if not state_obj:
+def _check_txn_object_key(txn_obj, tag, signer):
+    _check_key(
+        txn_obj, tag, signer,
+        "Transaction object's key doesn't match signer's key")
+
+
+def _check_state_object_authorization(state_obj, tag, signer):
+    _check_key(
+        state_obj, tag, signer,
+        'Submitter isn\'t authorized to make changes to "{}"'.format(
+            _get_unique_key(state_obj, tag)))
+
+
+def _check_key(obj, tag, signer, message):
+    if not obj:
         return
 
     if tag in (WORK, RECORDING):
-        pubkey = state_obj.registering_pubkey.decode()
+        pubkey = obj.registering_pubkey
     elif tag in (INDIVIDUAL, ORGANIZATION):
-        pubkey = state_obj.pubkey.decode()
+        pubkey = obj.pubkey.decode()
 
     if pubkey != signer:
-        raise InvalidTransaction('Signing key mismatch')
+        raise InvalidTransaction(message)
 
 
 def _check_split_sums(obj, tag):
