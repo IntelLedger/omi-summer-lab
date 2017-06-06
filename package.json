@@ -12,7 +12,7 @@
     "test": "standard && mocha --recursive omi-client/spec --compilers js:babel-register -r babel-polyfill",
     "watch:test": "mocha -w --recursive omi-client/spec --compilers js:babel-register -r babel-polyfill",
     "prepublish":": npm run compile-protobuf",
-    "postinstall": "./omi-client/scripts/install_sawtooth_sdk.sh",
+    "postinstall": "npm run compile-protobuf && ./omi-client/scripts/install_sawtooth_sdk.sh",
     "build-docs": "mkdir -p omi-client/docs && jsdoc -c jsdoc_conf.json -d ./omi-client/docs ./omi-client/README.md"
   },
   "author": "",
