@@ -269,13 +269,33 @@ class OmiClient {
    * @since 1.0.0
    */
   setRecording (recording) {
+    let references = []
+
+    if (recording.labelName) {
+      references.push(getObjectAddress(OrganizationalIdentity.name, recording.labelName))
+    }
+
+    references = references.concat((recording.contributorSplits || []).map(split => {
+      return getObjectAddress(IndividualIdentity.name, split.contributorName)
+    }))
+
+    references = references.concat((recording.derivedWorkSplits || []).map(split => {
+      return getObjectAddress(Work.name, split.workName)
+    }))
+
+    references = references.concat((recording.derivedRecordingSplits || []).map(split => {
+      return getObjectAddress(Recording.name, split.recordingName)
+    }))
+
     return _submitOmiTransaction(
       this._sawtoothRestUrl,
       this._privateKey,
       'SetRecording',
       Recording,
       'title',
-      Object.assign(recording, {registeringPubkey: this._publicKey}))
+      Object.assign(recording, {registeringPubkey: this._publicKey}),
+      references
+    )
   }
 
   /**
@@ -372,13 +392,25 @@ class OmiClient {
    * @since 1.0.0
    */
   setWork (work) {
+    let references = []
+    references = references.concat((work.songwriterPublisherSplits || []).map(split => {
+      return [
+        getObjectAddress(IndividualIdentity.name, split.songwriterPublisher.songwriterName),
+        getObjectAddress(OrganizationalIdentity.name, split.songwriterPublisher.publisherName)
+      ]
+    }))
+    // Flatten the array
+    .reduce((acc, val) => acc.concat(val), [])
+
     return _submitOmiTransaction(
       this._sawtoothRestUrl,
       this._privateKey,
       'SetWork',
       Work,
       'title',
-      Object.assign(work, {registeringPubkey: this._publicKey}))
+      Object.assign(work, {registeringPubkey: this._publicKey}),
+      references
+    )
   }
 
   /**
@@ -667,7 +699,7 @@ const _omiStateCursor = (baseUrl, messageType) =>
 /**
  * @private
  */
-const _submitOmiTransaction = (baseUrl, privateKey, action, messageType, naturalKeyField, omiObj) => {
+const _submitOmiTransaction = (baseUrl, privateKey, action, messageType, naturalKeyField, omiObj, additionalInputs = []) => {
   let err = messageType.verify(omiObj)
   if (err) {
     return Promise.reject(new Error(err))
@@ -692,7 +724,7 @@ const _submitOmiTransaction = (baseUrl, privateKey, action, messageType, natural
   })
 
   let batch = batcher.create([encoder.create(payload, {
-    inputs: [address],
+    inputs: [address].concat(additionalInputs),
     outputs: [address]
   })])
 
