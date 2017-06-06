@@ -1,0 +1,864 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>OMI Summer Lab Transaction Family Specification &mdash; OMI Summer Lab latest documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="OMI Summer Lab latest documentation" href="index.html"/>
+        <link rel="prev" title="Getting Started" href="getting_started.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="contents.html" class="icon icon-home"> OMI Summer Lab
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">OMI Summer Lab Transaction Family Specification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#state">State</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#addressing">Addressing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#transaction-payload">Transaction Payload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transaction-header">Transaction Header</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inputs-and-outputs">Inputs and Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#family">Family</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encoding">Encoding</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#execution">Execution</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">OMI Summer Lab</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="contents.html">Docs</a> &raquo;</li>
+        
+      <li>OMI Summer Lab Transaction Family Specification</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/transaction_family_specification.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="omi-summer-lab-transaction-family-specification">
+<h1>OMI Summer Lab Transaction Family Specification<a class="headerlink" href="#omi-summer-lab-transaction-family-specification" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The transaction family for the Open Music Initiative Summer Lab is
+intended to lay a foundation for the management of identities, musical
+works, and recordings on the Sawtooth blockchain. It is expected that
+Summer Lab projects will use, extend, or even replace portions of this
+design in their projects and demos.</p>
+<p>The transaction family allows users to set and update:</p>
+<ul class="simple">
+<li>Individual Identities - Songwriters, performers, DJs, etc.</li>
+<li>Organizational Identities - Labels, Publishers, etc.</li>
+<li>Musical Works - The composition of a song or piece of music.</li>
+<li>Musical or Video Recordings - A sound or video recording of a music
+performance or a recording derived from a number of recorded music
+performances.</li>
+</ul>
+<p>An OMI Summer Lab transaction request is defined by the following values:</p>
+<ul class="simple">
+<li>A verb which describes what action the transaction takes (e.g. SetRecording)</li>
+<li>An object which represents the full replacement value compatible with
+the action.</li>
+</ul>
+<p>For example, a ‘SetRecording’ transaction must contain a valid ‘Recording’
+object.</p>
+<p>For simplicity, the initial OMI Summer Lab transaction family combines
+‘create’ and ‘update’ semantics into a single ‘set’ concept. If the unique
+identifier used to encode the address of the object does not exist in state,
+then the signer of the transaction becomes the ‘registering owner’ of that
+object. Any future ‘set’ actions against that object must be signed by the
+same private key as was used to perform the first ‘set’. Each tranasaction
+also includes a full replace of the existing data.</p>
+<p>The initial actions are:</p>
+<ul class="simple">
+<li>SetIndividualIdentity</li>
+<li>SetOrganizationalIdentity</li>
+<li>SetWork</li>
+<li>SetRecording</li>
+</ul>
+</div>
+<div class="section" id="state">
+<h2>State<a class="headerlink" href="#state" title="Permalink to this headline">¶</a></h2>
+<p>The four different types of objects each have their own storage formats
+in global state, defined by Google Protocol Buffers v3 schemas.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">File: protos/identity.proto</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="highlight-protobuf"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">// Copyright 2017 Intel Corporation</span>
+<span class="c1">//</span>
+<span class="c1">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">// you may not use this file except in compliance with the License.</span>
+<span class="c1">// You may obtain a copy of the License at</span>
+<span class="c1">//</span>
+<span class="c1">//     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">//</span>
+<span class="c1">// Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">// See the License for the specific language governing permissions and</span>
+<span class="c1">// limitations under the License.</span>
+<span class="c1">// -----------------------------------------------------------------------------</span>
+
+<span class="na">syntax</span> <span class="o">=</span> <span class="s">&quot;proto3&quot;</span><span class="p">;</span>
+
+<span class="c1">// IndividualIdentity represents a specific person who might participate</span>
+<span class="c1">// in Works or Recordings.</span>
+<span class="kd">message</span> <span class="nc">IndividualIdentity</span> <span class="p">{</span>
+    <span class="c1">// Unique name for the individual -- to keep things simple, we</span>
+    <span class="c1">// are going to use name strings as the unique keys.</span>
+    <span class="kt">string</span> <span class="na">name</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="c1">// Interested Parties Information, can be null (org or individual,</span>
+    <span class="c1">// individual in this case) https://en.wikipedia.org/wiki/Interested_Parties_Information</span>
+    <span class="kt">string</span> <span class="na">IPI</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="c1">// International Standard Name Identifier, can be null (individuals only)</span>
+    <span class="c1">// https://en.wikipedia.org/wiki/International_Standard_Name_Identifier</span>
+    <span class="kt">string</span> <span class="na">ISNI</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="c1">// Street address for payments -- can be null</span>
+    <span class="kt">string</span> <span class="na">street_address</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+    <span class="c1">// The public key associated with the individual. The create/modify</span>
+    <span class="c1">// transactions must be signed by the same key (must match</span>
+    <span class="c1">// Transaction.header.signer_pubkey)</span>
+    <span class="kt">string</span> <span class="na">pubkey</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// OrganizationalIdentity represents a specific organization who might</span>
+<span class="c1">// participate in the publishing of Works or Recordings.</span>
+<span class="kd">message</span> <span class="nc">OrganizationalIdentity</span> <span class="p">{</span>
+    <span class="kd">enum</span> <span class="n">Type</span> <span class="p">{</span>
+        <span class="c1">// Labels are responsible for publishing Recordings</span>
+        <span class="na">LABEL</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="c1">//Publishers are responsible for publishing Works</span>
+        <span class="na">PUBLISHER</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Unique name for the organization -- to keep things simple,</span>
+    <span class="c1">// we are going to use name string as the unique keys.</span>
+    <span class="kt">string</span> <span class="na">name</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="c1">// The type of the organization, as denoted by the</span>
+    <span class="c1">// OrganizationalIdentity.Type enum.</span>
+    <span class="n">Type</span> <span class="na">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="c1">// Interested Parties Information, can be null (org or individual,</span>
+    <span class="c1">// org in this case) https://en.wikipedia.org/wiki/Interested_Parties_Information</span>
+    <span class="kt">string</span> <span class="na">IPI</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="c1">// Street address for payments -- can be null</span>
+    <span class="kt">string</span> <span class="na">street_address</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+    <span class="c1">// The public key associated with the organization. The create/modify</span>
+    <span class="c1">// transactions must be signed by the same key (must match</span>
+    <span class="c1">// Transaction.header.signer_pubkey)</span>
+    <span class="kt">string</span> <span class="na">pubkey</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">File: protos/work.proto</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-protobuf"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">// Copyright 2017 Intel Corporation</span>
+<span class="c1">//</span>
+<span class="c1">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">// you may not use this file except in compliance with the License.</span>
+<span class="c1">// You may obtain a copy of the License at</span>
+<span class="c1">//</span>
+<span class="c1">//     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">//</span>
+<span class="c1">// Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">// See the License for the specific language governing permissions and</span>
+<span class="c1">// limitations under the License.</span>
+<span class="c1">// -----------------------------------------------------------------------------</span>
+
+<span class="na">syntax</span> <span class="o">=</span> <span class="s">&quot;proto3&quot;</span><span class="p">;</span>
+
+<span class="c1">// A Work is the representation of musical work (composition). This is</span>
+<span class="c1">// distinct from a Recording, which is a capture of a specific performance.</span>
+<span class="kd">message</span> <span class="nc">Work</span> <span class="p">{</span>
+
+    <span class="c1">// SongwriterPublisher creates an association between an individual</span>
+    <span class="c1">// songwriter identity and the songwriter&#39;s publisher for this work.</span>
+    <span class="c1">// Works can also be self-published by a songwriter -- in this scenario,</span>
+    <span class="c1">// a OrganizationalIdentity for the songwriter&#39;s publishing company</span>
+    <span class="c1">// should be created. This is consistent with how the process works today.</span>
+    <span class="kd">message</span> <span class="nc">SongwriterPublisher</span> <span class="p">{</span>
+
+        <span class="c1">// Songwriter must be a valid name of an IndividualIdentity</span>
+        <span class="kt">string</span> <span class="na">songwriter_name</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="c1">// Publisher must be a valid name key of an OrganizationalIdentity</span>
+        <span class="c1">// type PUBLISHER</span>
+        <span class="kt">string</span> <span class="na">publisher_name</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// SongwriterPublisherSplit represents the fractional payment</span>
+    <span class="c1">// splits on the Work.</span>
+    <span class="kd">message</span> <span class="nc">SongwriterPublisherSplit</span> <span class="p">{</span>
+
+        <span class="c1">// A note on splits -- the requirement is that all splits total</span>
+        <span class="c1">// to 100. Where a non-evenly divisible result occurs, the</span>
+        <span class="c1">// expectation is that this is handled on generation side</span>
+        <span class="c1">// (e.g. 33, 33, 34%). While this is not ideal in the real</span>
+        <span class="c1">// world, it avoids the complexity of a special fixed or</span>
+        <span class="c1">// decimal representation and avoids the deterministic issues</span>
+        <span class="c1">// associated with using IEEE floats.</span>
+        <span class="kt">uint32</span> <span class="na">split</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">SongwriterPublisher</span> <span class="na">songwriter_publisher</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Unique title of the work -- use this as the natural unique key</span>
+    <span class="kt">string</span> <span class="na">title</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="c1">// International Standard Work Code, Can be null.</span>
+    <span class="c1">// https://en.wikipedia.org/wiki/International_Standard_Musical_Work_Code</span>
+    <span class="kt">string</span> <span class="na">ISWC</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="c1">// The constituent SongwriterPublisherSplit.splits must total 100.</span>
+    <span class="k">repeated</span> <span class="n">SongwriterPublisherSplit</span> <span class="na">songwriter_publisher_splits</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="c1">// The pubkey used to register the unique name of the work. This must</span>
+    <span class="c1">// match the Transaction.header.signer_pubkey. Initial creation of the</span>
+    <span class="c1">// Work is permitted by any pubkey. Future updates to the Work must be</span>
+    <span class="c1">// signed by the same party.</span>
+    <span class="kt">string</span> <span class="na">registering_pubkey</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">File: protos/recording.proto</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-protobuf"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">// Copyright 2017 Intel Corporation</span>
+<span class="c1">//</span>
+<span class="c1">// Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">// you may not use this file except in compliance with the License.</span>
+<span class="c1">// You may obtain a copy of the License at</span>
+<span class="c1">//</span>
+<span class="c1">//     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">//</span>
+<span class="c1">// Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">// distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">// See the License for the specific language governing permissions and</span>
+<span class="c1">// limitations under the License.</span>
+<span class="c1">// -----------------------------------------------------------------------------</span>
+
+<span class="na">syntax</span> <span class="o">=</span> <span class="s">&quot;proto3&quot;</span><span class="p">;</span>
+
+<span class="c1">// A Recording is the capture of a specific performance or a produced sound</span>
+<span class="c1">// or video recording which may be composed of other Recordings.</span>
+<span class="kd">message</span> <span class="nc">Recording</span> <span class="p">{</span>
+    <span class="kd">enum</span> <span class="n">Type</span> <span class="p">{</span>
+        <span class="na">SONG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="na">MIX</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="na">COMPILATION</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="na">VISUAL_WORK</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// The RecordingOverallSplit determines how a payment on the Recording</span>
+    <span class="c1">// is allocated to the derived works (compositions), derived Recordings</span>
+    <span class="c1">// (samples), and contributors (players on the Recording). Must total</span>
+    <span class="c1">// to 100.</span>
+    <span class="kd">message</span> <span class="nc">RecordingOverallSplit</span> <span class="p">{</span>
+        <span class="kt">uint32</span> <span class="na">derived_work_portion</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="kt">uint32</span> <span class="na">derived_recording_portion</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="kt">uint32</span> <span class="na">contributor_portion</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ContributorSplit is a split for the contributor portion of the</span>
+    <span class="c1">// payment.</span>
+    <span class="kd">message</span> <span class="nc">ContributorSplit</span> <span class="p">{</span>
+        <span class="kt">uint32</span> <span class="na">split</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="c1">// A contributor_name must be a valid IndividualIdentity.name</span>
+        <span class="kt">string</span> <span class="na">contributor_name</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// DerivedWorkSplit is a split for the derived work portion of</span>
+    <span class="c1">// the payment.</span>
+    <span class="kd">message</span> <span class="nc">DerivedWorkSplit</span> <span class="p">{</span>
+        <span class="kt">uint32</span> <span class="na">split</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="c1">// Must be a valid Work.name</span>
+        <span class="kt">string</span> <span class="na">work_name</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// DerivedRecordingSplit is a split for the derived recording</span>
+    <span class="c1">// portion of the payment.</span>
+    <span class="kd">message</span> <span class="nc">DerivedRecordingSplit</span> <span class="p">{</span>
+        <span class="kt">uint32</span> <span class="na">split</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="c1">// Must be a valid Recording.name</span>
+        <span class="kt">string</span> <span class="na">recording_name</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// The title of the Recording -- use this for the unique natural key</span>
+    <span class="kt">string</span> <span class="na">title</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">Type</span> <span class="na">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="c1">// International Standard Recording Code, can be null</span>
+    <span class="c1">// https://en.wikipedia.org/wiki/International_Standard_Recording_Code</span>
+    <span class="kt">string</span> <span class="na">ISRC</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+
+    <span class="c1">// An OrganizationalIdentity.name of type LABEL, can be null</span>
+    <span class="kt">string</span> <span class="na">label_name</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+
+    <span class="c1">// contributor_splits must total 100.</span>
+    <span class="k">repeated</span> <span class="n">ContributorSplit</span> <span class="na">contributor_splits</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+
+    <span class="c1">// derived_work_splits must total 100.</span>
+    <span class="k">repeated</span> <span class="n">DerivedWorkSplit</span> <span class="na">derived_work_splits</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+
+    <span class="c1">// derived_recording_splits must total 100.</span>
+    <span class="k">repeated</span> <span class="n">DerivedRecordingSplit</span> <span class="na">derived_recording_splits</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+
+    <span class="c1">// overall_split fields must total 100.</span>
+    <span class="n">RecordingOverallSplit</span> <span class="na">overall_split</span> <span class="o">=</span> <span class="mi">8</span><span class="p">;</span>
+
+    <span class="c1">// The pubkey used to register the unique name of the recording.</span>
+    <span class="c1">// This must match the Transaction.header.signer_pubkey. Initial</span>
+    <span class="c1">// creation of the Recording is permitted by any pubkey. Future</span>
+    <span class="c1">// updates to the Recording must be signed by the same party.</span>
+    <span class="kt">string</span> <span class="na">registering_pubkey</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="addressing">
+<h3>Addressing<a class="headerlink" href="#addressing" title="Permalink to this headline">¶</a></h3>
+<p>OMI Summer Lab data is stored in state using addresses which are generated
+from the OMI Summer Lab namespace prefix, the object type prefix, and the
+unique key field of the object.</p>
+<p>Addresses will adhere to the following format:</p>
+<ul class="simple">
+<li>Addresses must be a 70 character hexadecimal string</li>
+<li>The first 6 characters of the address are the first 6 hexdigest
+characters of a sha512 hash of the utf-8 formatted string ‘OMI’</li>
+<li>The next 2 characters of the address are based on the object type:<ul>
+<li>‘00’ - IndividualIdentity</li>
+<li>‘01’ - OrganizationalIdentity</li>
+<li>‘a0’ - Work</li>
+<li>‘a1’ - Recording</li>
+</ul>
+</li>
+<li>The remaining 62 characters of the address are the last 62 hexdigest
+characters of a sha512 hash of the unique key field of the object.</li>
+</ul>
+<p>The unique key fields are ‘name’ for identities and ‘title’ for works
+and recordings.</p>
+<p>For example, an OMI Summer Lab address for the IndividualIdentity ‘David
+Hasslehoff’ would be generated as follows:</p>
+<div class="highlight-pycon"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">(</span><span class="s1">&#39;OMI&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;00&#39;</span> <span class="o">+</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha512</span><span class="p">(</span><span class="s1">&#39;David Hasslehoff&#39;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()[</span><span class="o">-</span><span class="mi">62</span><span class="p">:]</span>
+<span class="go">&#39;38aa5000c4a0ef7500c34bf14387cdae75df3c5ac3cb95f66e6dcf1f126b7f8230dce5&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="transaction-payload">
+<h2>Transaction Payload<a class="headerlink" href="#transaction-payload" title="Permalink to this headline">¶</a></h2>
+<p>OMI Summer Lab transaction payloads are defined by a protobuf container
+format which contains the action and an array of bytes containing
+serialized versions of the protobuf definitions described above in the
+State section. Since the transactions contain full replacement values,
+we can reuse the formats for transaction payload definition and for
+storage in state.</p>
+</div>
+<div class="section" id="transaction-header">
+<h2>Transaction Header<a class="headerlink" href="#transaction-header" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="inputs-and-outputs">
+<h3>Inputs and Outputs<a class="headerlink" href="#inputs-and-outputs" title="Permalink to this headline">¶</a></h3>
+<p>The inputs for OMI Summer Lab family transactions must include:</p>
+<ul class="simple">
+<li>Address of the objects being read as part of validating the
+transaction. This includes the object’s address and the addresses
+of all dependent ‘foreign keys’. For example, if a Work references a
+songwriter, the transaction header must include the calculated
+address of that songwriter’s IndividualIdentity, because the
+transaction processor must perform a get to determine if that object
+exists.</li>
+</ul>
+<p>The outputs for OMI Summer Lab family transactions must include:</p>
+<ul class="simple">
+<li>Address of the object being set.</li>
+</ul>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Based on the current ‘set-only’ design of the OMI Summer Lab transactions,
+explicit dependencies should not be required.</p>
+</div>
+<div class="section" id="family">
+<h3>Family<a class="headerlink" href="#family" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>family_name: “OMI”</li>
+<li>family_version: “1.0”</li>
+</ul>
+</div>
+<div class="section" id="encoding">
+<h3>Encoding<a class="headerlink" href="#encoding" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>payload_encoding: “application/protobuf”</li>
+</ul>
+</div>
+</div>
+<div class="section" id="execution">
+<h2>Execution<a class="headerlink" href="#execution" title="Permalink to this headline">¶</a></h2>
+<p>In order to keep the implementation simple, we have not placed a lot of
+constraints on the input data. For example, we are not enforcing maximum
+lengths on string types. A production use case would require tighter
+controls on allowable input data.</p>
+<p>The transaction processor does need to enforce implied ‘foreign key’
+relationships between objects. For example, a ‘SetWork’ transaction
+which references a songwriter name which does not appear as an
+IndividualIdentity should result in an InvalidTransaction. All implied
+references of this type should be checked in the transaction handler.</p>
+<p>The transaction handler must verify whether the pubkey fields in the
+IndividualIdentity and OrganizationalIdentity and the registering_pubkey
+fields in the Work and Recording object match the public key of the
+Transaction.header.signer_pubkey. This ensures that the signer of the
+transaction is the same as the claimed identity in the data.</p>
+<p>If an object already exists at an address, the transaction handler must
+also check to see if the public key in the existing data matches the
+public key in the transaction payload. If it does not, it should result
+in an InvalidTransaction.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Intel Corporation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

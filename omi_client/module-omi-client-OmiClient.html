@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: OmiClient</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: OmiClient</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+            <span class="ancestors"><a href="module-omi-client.html">omi-client</a>~</span>OmiClient</h2>
+        
+            <div class="class-description"><p>An OmiClient provides a simple interface for creating objects on an instance
+of a Hyperledger Sawtooth blockchain, and retrieving them back from the
+gobal state.</p>
+<p>Each client instance is connected to a specific Sawtooth REST API instance
+and initialized with a secp256k1 private key, which establishes the client's
+identity and is used for signing transactions.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="OmiClient"><span class="type-signature"></span>new OmiClient<span class="signature">(sawtoothRestUrl, privateKey)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Constructs an OmiClient.</p>
+<p>This constructs an instance of an OmiClient</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sawtoothRestUrl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the URL of the Sawtooth REST API; E.g.
+http://localhost:8080, for a local instance</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>privateKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the secp256k1 private key to use when signing
+transactions, in hex format</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line48">line 48</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="https://intelledger.github.io/_autogen/txn_submit_tutorial_js.html#creating-private-and-public-keys">https://intelledger.github.io/_autogen/txn_submit_tutorial_js.html#creating-private-and-public-keys</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="getIndividual"><span class="type-signature"></span>getIndividual<span class="signature">(name)</span><span class="type-signature"> &rarr; {Promise.&lt;Object>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Fetch an IndividualIdentity from the global state, and returns the value
+via a promise.</p>
+<p>The resulting object returned on the resolved promise will be structured
+like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;name&quot;: &quot;String&quot;, // a Unique name; the natural key
+  &quot;IPI&quot;: &quot;International Parties Information&quot;, // may be null
+  &quot;ISNI&quot;: &quot;International Standard Name Identifier&quot;, // may be null
+  &quot;street_address&quot;: &quot;street address for payments&quot;, // may be null
+  &quot;pubkey&quot;: &quot;creators pub key in hex&quot; // matches the signer's pubkey
+}</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the individual's name (the natural key)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line133">line 133</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise for an IndividualIdentity</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Object></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getIndividuals"><span class="type-signature"></span>getIndividuals<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns a cursor for all the users.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line140">line 140</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getOrganization"><span class="type-signature"></span>getOrganization<span class="signature">(name)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Fetch an OrganizationalIdentity from the global state, and return the value
+via a promise.</p>
+<p>The resulting object returned on the resolved promise will be structured
+like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;name&quot;: &quot;String&quot;, // a Unique name; its natural key
+  &quot;type&quot;: OrganizationalIdentity.LABEL | OrganizationalIdentity.PUBLISHER,
+  &quot;IPI&quot;: &quot;International Parties Information&quot;, // may be null
+  &quot;street_address&quot;: &quot;street address for payments&quot;, // may be null
+}</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the organization's name (the natural key)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line208">line 208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise for an OrganizationalIdentity</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getRecording"><span class="type-signature"></span>getRecording<span class="signature">(title)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Fetch a Recording from the global state, and return the value via a
+promise.</p>
+<p>The resulting object returned on the resolved promise will be structured
+like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;title&quot;: &quot;String&quot;, // The title of the Recording (its natural key)
+  &quot;type&quot;: &lt;an int>, // The value of which is a Recording.Type
+  &quot;ISRC&quot;: &quot;International Standard Recording Code&quot;, // can be null
+  &quot;labelName&quot;: &quot;Org.name of type LABEL&quot;, // can be null
+  &quot;contributorSplits&quot;: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;contributorName&quot;: &quot;An IndividualIdentity.name&quot;
+    },
+    // and more
+  ],
+  derivedWorkSplits: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;workName&quot;: &quot;A Work.name&quot;
+    },
+  ],
+  derivedRecordingSplits: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;recordingName&quot;: &quot;A Recording.name&quot;
+    },
+  ],
+  overallSplit: {
+     // all splits in this list must add up to 100
+    &quot;derivedWorkPortion&quot;: &lt;a positive int>,
+    &quot;derivedRecordingPortion&quot;: &lt;a positive int>,
+    &quot;contributorPortion&quot;: &lt;a positive int>
+  }
+}</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the title of the recording (its natural key)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line351">line 351</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the promise for the Recording value</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getWork"><span class="type-signature"></span>getWork<span class="signature">(title)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Fetch a Work from the global state, and return the value via a promise.</p>
+<p>The resulting object returned on the resolved promis will be structured
+like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;title&quot;: &quot;String&quot;, // a unique title of the work; the natural key
+  &quot;ISWC&quot;: &quot;International Standard Work Code&quot;, // may be null
+  &quot;songwriterPublisherSplits&quot;: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;songwriterPublisher&quot;: {
+        &quot;songwriterName&quot;: &quot;IndividualIdentity.name&quot;,
+        &quot;publisherName&quot;: &quot;OrganizationalIdentity.name&quot; // must be Type.PUBLISHER
+      }
+    },
+    // and more
+  ]
+}</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the title of the work (its natural key)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line446">line 446</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>the promise for the work value</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setIndividual"><span class="type-signature"></span>setIndividual<span class="signature">(individual)</span><span class="type-signature"> &rarr; {Promise.&lt;StatusChecker>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set an Individual Identity.</p>
+<p>A SetIndividualIdentity transaction will be submitted to the blockchain,
+and a URL for the resulting batch status via a promise.</p>
+<p>The argument should be structured like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;name&quot;: &quot;String&quot;, // a Unique name; the natural key
+  &quot;IPI&quot;: &quot;International Parties Information&quot;, // may be null
+  &quot;ISNI&quot;: &quot;International Standard Name Identifier&quot;, // may be null
+  &quot;street_address&quot;: &quot;street address for payments&quot;, // may be null
+}</code></pre><p>Only previously set objects using the same private key as this instance may
+be overwritten.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>individual</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the individual identity to be set</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the natural key of the individual</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>IPI</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional International Parties
+Information</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ISNI</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional International Standard Name
+Identifier</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>street_address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>optional street address for
+payments</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line100">line 100</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise for the result of transaction submission</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;StatusChecker></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setOrganization"><span class="type-signature"></span>setOrganization<span class="signature">(organization)</span><span class="type-signature"> &rarr; {Promise.&lt;StatusChecker>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set Organizational Identity.</p>
+<p>A SetOrganizationalIdentity transaction will be submitted to the
+blockchain, and a URL for the resulting batch status will be returned via a
+promise.</p>
+<p>The argument should be structured like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;name&quot;: &quot;String&quot;, // a Unique name; the natural key
+  &quot;type&quot;: &lt;OrganizationalIdentity.type>, // the type of the organization
+  &quot;IPI&quot;: &quot;International Parties Information&quot;, // may be null
+  &quot;street_address&quot;: &quot;street address for payments&quot;, // may be null
+}</code></pre><p>Only previously set objects using the same private key as this instance may
+be overwritten.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>organization</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>an organizational identity to be set</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the natural key of the organization</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">OrganizationalIdentity.Type</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>the type of the
+organization</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>IPI</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>International Parties Information</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>street_address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>street address for payments</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line176">line 176</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise for the result of transaction submission</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;StatusChecker></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setRecording"><span class="type-signature"></span>setRecording<span class="signature">(recording)</span><span class="type-signature"> &rarr; {Promise.&lt;StatusChecker>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set a Recording.</p>
+<p>A SetRecording transaction will be submitted to the blockchain, and a URL
+for the resulting batch status will be returned via a promise.</p>
+<p>The argument should be structured like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;title&quot;: &quot;String&quot;, // The title of the Recording (its natural key)
+  &quot;type&quot;: &lt;an int>, // The value of which is a Recording.Type
+  &quot;ISRC&quot;: &quot;International Standard Recording Code&quot;, // can be null
+  &quot;labelName&quot;: &quot;Org.name of type LABEL&quot;, // can be null
+  &quot;contributorSplits&quot;: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;contributorName&quot;: &quot;An IndividualIdentity.name&quot;
+    },
+    // and more
+  ],
+  derivedWorkSplits: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;workName&quot;: &quot;A Work.name&quot;
+    },
+  ],
+  derivedRecordingSplits: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;recordingName&quot;: &quot;A Recording.name&quot;
+    },
+  ],
+  overallSplit: {
+     // all splits in this list must add up to 100
+    &quot;derivedWorkPortion&quot;: &lt;a positive int>,
+    &quot;derivedRecordingPortion&quot;: &lt;a positive int>,
+    &quot;contributorPortion&quot;: &lt;a positive int>
+  }
+}</code></pre><p>Only previously set objects using the same private key as this instance may
+be overwritten.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>recording</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the Recording to be set; see method doc for
+structure</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line271">line 271</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise for the result of transaction submission</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;StatusChecker></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setWork"><span class="type-signature"></span>setWork<span class="signature">(work)</span><span class="type-signature"> &rarr; {Promise.&lt;StatusChecker>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Set a Work.</p>
+<p>A SetWork transaction will be submitted to the blockchain and a URL for the
+resulting batch status will be returned via a promise.</p>
+<p>The argument should be structured like so:</p>
+<pre class="prettyprint source"><code>{
+  &quot;title&quot;: &quot;String&quot;, // a unique title of the work; the natural key
+  &quot;ISWC&quot;: &quot;International Standard Work Code&quot;, // may be null
+  &quot;songwriterPublisherSplits&quot;: [
+    {
+      // all splits in this list must add up to 100
+      &quot;split&quot;: &lt;a positive int>,
+      &quot;songwriterPublisher&quot;: {
+        &quot;songwriterName&quot;: &quot;IndividualIdentity.name&quot;,
+        &quot;publisherName&quot;: &quot;OrganizationalIdentity.name&quot; // must be Type.PUBLISHER
+      }
+    },
+    // and more
+  ]
+}</code></pre><p>Only previously set objects using the same private key as this instance may
+be overwritten.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>work</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the Work to be set; see method doc for structure</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+    <dt class="tag-since">Since:</dt>
+    <dd class="tag-since"><ul class="dummy"><li>1.0.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line394">line 394</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>a promise for the result of transaction submission</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;StatusChecker></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-omi-client.html">omi-client</a></li><li><a href="module-omi-client_addressing.html">omi-client/addressing</a></li><li><a href="module-omi-client_protobuf.html">omi-client/protobuf</a></li></ul><h3>Externals</h3><ul><li><a href="external-Message.html">Message</a></li></ul><h3>Classes</h3><ul><li><a href="module-omi-client_protobuf.IndividualIdentity.html">IndividualIdentity</a></li><li><a href="module-omi-client_protobuf.OMITransactionPayload.html">OMITransactionPayload</a></li><li><a href="module-omi-client_protobuf.OrganizationalIdentity.html">OrganizationalIdentity</a></li><li><a href="module-omi-client_protobuf.Recording.html">Recording</a></li><li><a href="module-omi-client_protobuf.Work.html">Work</a></li><li><a href="module-omi-client-Cursor.html">Cursor</a></li><li><a href="module-omi-client-OmiClient.html">OmiClient</a></li><li><a href="module-omi-client-StatusChecker.html">StatusChecker</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jun 06 2017 17:27:18 GMT-0500 (CDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
