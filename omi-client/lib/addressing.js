@@ -16,7 +16,7 @@
  */
 
 /**
- * @module omi-summer-lab/addressing
+ * @module omi-client/addressing
  */
 const _crypto = require('crypto')
 

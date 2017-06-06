@@ -16,7 +16,7 @@
  */
 
 /**
- * @module omi-summer-lab
+ * @module omi-client
  */
 
 const request = require('superagent')
