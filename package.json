@@ -13,7 +13,7 @@
     "watch:test": "mocha -w --recursive omi-client/spec --compilers js:babel-register -r babel-polyfill",
     "prepublish":": npm run compile-protobuf",
     "postinstall": "npm run compile-protobuf && ./omi-client/scripts/install_sawtooth_sdk.sh",
-    "build-docs": "mkdir -p omi-client/docs && jsdoc -c jsdoc_conf.json -d ./omi-client/docs ./omi-client/README.md"
+    "build-docs": "jsdoc -c jsdoc_conf.json -d ./docs/build/html/omi_client ./omi-client/README.md"
   },
   "author": "",
   "license": "Apache-2.0",
