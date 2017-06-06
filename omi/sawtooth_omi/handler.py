@@ -58,8 +58,8 @@ def get_tag(action):
         if action in action_group:
             return tags[action_group]
 
-# address
 
+# address
 def _hash_name(name):
     return hashlib.sha512(name.encode('utf-8')).hexdigest()
 
@@ -232,7 +232,7 @@ def _check_split_sums(obj, tag):
         overall_sum = sum([
             overall.derived_work_portion,
             overall.derived_recording_portion,
-            overall.contributor_portion,])
+            overall.contributor_portion])
 
         if overall_sum != 100:
             raise InvalidTransaction(
@@ -314,9 +314,8 @@ def _check_references(state, obj, tag):
             contributor = contributor_split.contributor_name
             if _get_state_object(state, contributor, INDIVIDUAL) is None:
                 raise InvalidTransaction(
-                    'Recording "{t}" references unknown contributor "{c}"'.format(
-                        t=obj.title,
-                        c=contributor))
+                    'Recording "{t}" references unknown contributor '
+                    '"{c}"'.format(t=obj.title, c=contributor))
 
         # check derived works
         for derived_work_split in obj.derived_work_splits:
@@ -332,12 +331,11 @@ def _check_references(state, obj, tag):
             recording = derived_recording_split.recording_name
             if _get_state_object(state, recording, RECORDING) is None:
                 raise InvalidTransaction(
-                    'Recording "{t}" references unknown recording "{r}"'.format(
-                        t=obj.title,
-                        r=recording))
+                    'Recording "{t}" references unknown recording '
+                    '"{r}"'.format(t=obj.title, r=recording))
+
 
 # state
-
 def _get_state_object(state, name, tag):
     try:
         address = make_omi_address(name, tag)
