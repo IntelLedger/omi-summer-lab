@@ -21,8 +21,7 @@ const path = require('path')
 const fs = require('fs')
 
 const protobuf = require('protobufjs')
-const jsonTarget = require(
-  path.resolve(__dirname, '../../node_modules/protobufjs/cli/targets/json'))
+const jsonTarget = require('protobufjs/cli/targets/json')
 
 const protoDir = path.resolve(__dirname, '../../protos')
 
