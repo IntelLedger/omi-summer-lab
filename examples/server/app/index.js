@@ -21,29 +21,34 @@ const app = express()
 let {OmiClient} = require('omi-client')
 // let {signer} = require('sawtooth-sdk')
 
+const BASE_SAWTOOTH_URL = 'http://localhost:8080'
+// This should either be generated once per rest user, or, in the case of reads,
+// is unecessary.
+const PRIVATE_KEY = ''
+
 app.get('/individuals', (req, res) => {
-  let omiClient = new OmiClient('http://localhost:18080', '')
+  let omiClient = new OmiClient(BASE_SAWTOOTH_URL, PRIVATE_KEY)
 
   return omiClient.getIndividuals().all()
                   .then(individuals => res.send(individuals))
 })
 
 app.get('/organizations', (req, res) => {
-  let omiClient = new OmiClient('http://localhost:18080', '')
+  let omiClient = new OmiClient(BASE_SAWTOOTH_URL, PRIVATE_KEY)
 
   return omiClient.getOrganizations().all()
                   .then(organizations => res.send(organizations))
 })
 
 app.get('/works', (req, res) => {
-  let omiClient = new OmiClient('http://localhost:18080', '')
+  let omiClient = new OmiClient(BASE_SAWTOOTH_URL, PRIVATE_KEY)
 
   return omiClient.getWorks().all()
                   .then(works => res.send(works))
 })
 
 app.get('/recordings', (req, res) => {
-  let omiClient = new OmiClient('http://localhost:18080', '')
+  let omiClient = new OmiClient(BASE_SAWTOOTH_URL, PRIVATE_KEY)
 
   return omiClient.getRecordings().all()
                   .then(recordings => res.send(recordings))
