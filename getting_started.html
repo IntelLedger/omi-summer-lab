@@ -36,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="OMI Summer Lab latest documentation" href="index.html"/>
-        <link rel="next" title="OMI Summer Lab Transaction Family Specification" href="transaction_family_specification.html"/>
+        <link rel="next" title="OMI Client JavaScript SDK" href="omi_client.html"/>
         <link rel="prev" title="Table of Contents" href="contents.html"/> 
 
   
@@ -92,6 +92,7 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="omi_client.html">OMI Client JavaScript SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transaction_family_specification.html">OMI Summer Lab Transaction Family Specification</a></li>
 </ul>
 
@@ -158,6 +159,20 @@
             
   <div class="section" id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>The following tools are required:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.docker.com/engine/installation/">Docker Engine</a> (17.03.0-ce
+or later)</li>
+<li><a class="reference external" href="https://docs.docker.com/compose/install/">Docker Compose</a> (Linux only)</li>
+</ul>
+<p>To start a validator node running the OMI transaction handler, run:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">%</span> docker-compose -f omi-summer-lab/docker/compose-with-omi.yaml up
+</pre></div>
+</div>
+<p>This will start a validator, a config transaction handler, an OMI transaction handler, and a REST API instance with which a client can communicate. To stop the validator node, press Ctrl-c and then run</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">%</span> docker-compose -f omi-summer-lab/docker/compose-with-omi.yaml down
+</pre></div>
+</div>
 <p>See the <a class="reference external" href="omi_client/index.html">OMI JavaScript SDK</a>.</p>
 </div>
 
@@ -171,7 +186,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="transaction_family_specification.html" class="btn btn-neutral float-right" title="OMI Summer Lab Transaction Family Specification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="omi_client.html" class="btn btn-neutral float-right" title="OMI Client JavaScript SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="contents.html" class="btn btn-neutral" title="Table of Contents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
