@@ -1,13 +1,22 @@
 {%- extends "layout.html" %}
-{% set title = 'Overview' %}
+{% set title = 'OMI Summer Lab' %}
 {% block body %}
 
   <h1>OMI Summer Lab</h1>
 
-  <p class="biglink"><a class="biglink" href="{{ pathto("getting_started")
-    }}">{% trans %}Getting Started{% endtrans %}</a><br/>
-    <span class="linkdescr">{% trans %}gettting started with OMI Summer Lab on
+  <p class="biglink"><a class="biglink" href="{{ pathto("welcome")
+    }}">{% trans %}Welcome to OMI Summer Lab{% endtrans %}</a><br/>
+    <span class="linkdescr">{% trans %}Learn about OMI Summer Lab on
       Hyperledger Sawtooth{% endtrans %}</span></p>
 
+  <p class="biglink"><a class="biglink" href="{{ pathto("getting_started")
+    }}">{% trans %}Getting Started{% endtrans %}</a><br/>
+    <span class="linkdescr">{% trans %}Gettting started with OMI Summer Lab on
+      Hyperledger Sawtooth{% endtrans %}</span></p>
+
+  <p class="biglink"><a class="biglink" href="{{ pathto("omi_client")
+    }}">{% trans %}OMI Client JavaScript SDK{% endtrans %}</a><br/>
+    <span class="linkdescr">{% trans %}Using the OMI JavaScript Client SDK
+      {% endtrans %}</span></p>
 
 {% endblock %}
