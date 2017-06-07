@@ -45,9 +45,9 @@ services:
         sawtooth config genesis -k /root/.sawtooth/keys/my_key.priv && \
         sawtooth admin genesis config-genesis.batch && \
         validator -v \
-          --public-uri tcp://validator:8800 \
-          --component-endpoint tcp://eth0:40000 \
-          --network-endpoint tcp://eth0:8800 \
+          --endpoint tcp://validator:8800 \
+          --bind component:tcp://eth0:40000 \
+          --bind network:tcp://eth0:8800 \
         \""
 
   rest_api:
@@ -59,7 +59,7 @@ services:
       - "8080:8080"
     depends_on:
       - validator
-    entrypoint: rest_api --stream-url tcp://validator:40000 --host rest_api
+    entrypoint: rest_api --connect tcp://validator:40000 --bind rest_api:8080
 
   client:
     image: hyperledger/sawtooth-all:latest
