@@ -4,6 +4,8 @@ Table of Contents
 
 .. toctree::
 
+   welcome.rst
+
    getting_started.rst
 
    omi_client.rst

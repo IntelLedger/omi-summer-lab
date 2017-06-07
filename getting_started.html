@@ -37,7 +37,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="OMI Summer Lab latest documentation" href="index.html"/>
         <link rel="next" title="OMI Client JavaScript SDK" href="omi_client.html"/>
-        <link rel="prev" title="Table of Contents" href="contents.html"/> 
+        <link rel="prev" title="Welcome to OMI Summer Lab" href="welcome.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -91,7 +91,16 @@
             
             
               <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome to OMI Summer Lab</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-the-source">Getting the Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-docker-compose">Using Docker Compose</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-tools">Required Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-up-hyperledger-sawtooth">Starting Up Hyperledger Sawtooth</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="omi_client.html">OMI Client JavaScript SDK</a></li>
 <li class="toctree-l1"><a class="reference internal" href="transaction_family_specification.html">OMI Summer Lab Transaction Family Specification</a></li>
 </ul>
@@ -159,21 +168,65 @@
             
   <div class="section" id="getting-started">
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>This guide will help you get started with Hyperledger Sawtooth and the OMI
+Summer Lab Transaction Processor.</p>
+<div class="section" id="getting-the-source">
+<h2>Getting the Source<a class="headerlink" href="#getting-the-source" title="Permalink to this headline">¶</a></h2>
+<p>OMI Summer Lab is made available via the source repository.  This repository is
+hosted on <a class="reference external" href="https://github.com/IntelLedger/omi-summer-lab">Github</a>.</p>
+<p>You will need to have <cite>git</cite> installed on your system. If you need help setting
+this up, you’ll find a handy guide <a class="reference external" href="https://help.github.com/articles/set-up-git/">here</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On Mac OS, <cite>git</cite> is already installed, but if you haven’t used it, you may
+need to run, in the terminal:</p>
+<div class="last highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> xcode-select --install
+</pre></div>
+</div>
+</div>
+<p>To clone the repository:</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone https://github.com/IntelLedger/omi-summer-lab
+<span class="go">Cloning into &#39;omi-summer-lab&#39;...</span>
+<span class="go">remote: Counting objects: 403, done.</span>
+<span class="go">remote: Compressing objects: 99% (153/153), done.</span>
+<span class="go">remote: Total 403 (delta 66), reused 199 (delta 59), pack-reused 186</span>
+<span class="go">Receiving objects: 99% (404/404), 1.93 MiB | 952.00 KiB/s, done.</span>
+<span class="go">Resolving deltas: 99% (124/124), done.</span>
+</pre></div>
+</div>
+<p>You’ll find the Transaction Processor source in <cite>omi-summer-lab/omi</cite> and the
+JavaScript client library source in <cite>omi-summer-lab/omi-client</cite>.</p>
+</div>
+<div class="section" id="using-docker-compose">
+<h2>Using Docker Compose<a class="headerlink" href="#using-docker-compose" title="Permalink to this headline">¶</a></h2>
+<p>Docker is an open-source project for running applications in a software
+container.  We provide several docker containers for running the various
+components of Hyperledger sawtooth, as well as the OMI Summer Lab Transaction
+Processor. All of these containers can be started in concert by using Docker
+Compose.</p>
+<div class="section" id="required-tools">
+<h3>Required Tools<a class="headerlink" href="#required-tools" title="Permalink to this headline">¶</a></h3>
 <p>The following tools are required:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://docs.docker.com/engine/installation/">Docker Engine</a> (17.03.0-ce
 or later)</li>
 <li><a class="reference external" href="https://docs.docker.com/compose/install/">Docker Compose</a> (Linux only)</li>
 </ul>
+</div>
+<div class="section" id="starting-up-hyperledger-sawtooth">
+<h3>Starting Up Hyperledger Sawtooth<a class="headerlink" href="#starting-up-hyperledger-sawtooth" title="Permalink to this headline">¶</a></h3>
 <p>To start a validator node running the OMI transaction handler, run:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">%</span> docker-compose -f omi-summer-lab/docker/compose-with-omi.yaml up
 </pre></div>
 </div>
-<p>This will start a validator, a config transaction handler, an OMI transaction handler, and a REST API instance with which a client can communicate. To stop the validator node, press Ctrl-c and then run</p>
+<p>This will start a validator, a config transaction handler, an OMI transaction
+handler, and a REST API instance with which a client can communicate. To stop
+the validator node, press Ctrl-c and then run:</p>
 <div class="highlight-console"><div class="highlight"><pre><span></span><span class="gp">%</span> docker-compose -f omi-summer-lab/docker/compose-with-omi.yaml down
 </pre></div>
 </div>
-<p>See the <a class="reference external" href="omi_client/index.html">OMI JavaScript SDK</a>.</p>
+</div>
+</div>
 </div>
 
 
@@ -189,7 +242,7 @@ or later)</li>
         <a href="omi_client.html" class="btn btn-neutral float-right" title="OMI Client JavaScript SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="contents.html" class="btn btn-neutral" title="Table of Contents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="welcome.html" class="btn btn-neutral" title="Welcome to OMI Summer Lab" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
