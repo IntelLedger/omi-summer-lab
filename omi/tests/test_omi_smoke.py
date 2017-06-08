@@ -19,7 +19,7 @@ import logging
 import requests
 import unittest
 
-from sawtooth_omi.omi_message_factory import OMIMessageFactory
+from tests.omi_message_factory import OMIMessageFactory
 from sawtooth_omi.protobuf.work_pb2 import Work
 from sawtooth_omi.protobuf.recording_pb2 import Recording
 from sawtooth_omi.protobuf.identity_pb2 import IndividualIdentity
