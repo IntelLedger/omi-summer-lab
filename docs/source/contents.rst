@@ -8,6 +8,8 @@ Table of Contents
 
    getting_started.rst
 
+   txn_processor_dev.rst
+
    omi_client.rst
 
    transaction_family_specification.rst
