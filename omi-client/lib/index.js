@@ -679,7 +679,7 @@ const _promisePost = (url, data) =>
 const _omiStateXform = (messageType) => (entry) => {
   let bytes = Buffer.from(entry.data, 'base64')
   let omiObject = messageType.decode(bytes)
-  return omiObject.toObject()
+  return messageType.toObject(omiObject)
 }
 
 /**
