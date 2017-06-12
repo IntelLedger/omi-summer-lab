@@ -737,5 +737,9 @@ const _submitOmiTransaction = (baseUrl, privateKey, action, messageType, natural
 module.exports = {
   OmiClient,
   Cursor,
-  StatusChecker
+  StatusChecker,
+  IndividualIdentity,
+  OrganizationalIdentity,
+  Recording,
+  Work
 }
